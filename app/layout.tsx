@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./page.css";
 
 export const metadata: Metadata = {
   title: "EKA Water Enhancer — One Squeeze. Endless Flavor.",
