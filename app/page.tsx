@@ -716,7 +716,13 @@ function FAQ() {
 
 // ─── Cart Drawer ──────────────────────────────────────────────────────────────
 
-export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function CartDrawer({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   const { items, removeFromCart, updateQuantity, totalPrice, clearCart } =
     useCart();
   const [checkout, setCheckout] = useState(false);
@@ -1029,8 +1035,8 @@ export function Footer() {
           </div>
           <div className="footer-contact">
             <h4>Get in Touch</h4>
-            <p>📧 hello@ekawater.ng</p>
-            <p>📞 +234 800 EKA WATER</p>
+            <p>📧 peter@omyanntechnologies.com</p>
+            <p>📞 +1 (470) 378-0566</p>
             <p>🚚 Free delivery over ₦10,000</p>
           </div>
         </div>
@@ -1064,7 +1070,7 @@ function EkaApp() {
       {
         threshold: 0.05,
         rootMargin: "0px 0px -40px 0px",
-      }
+      },
     );
 
     const elements = document.querySelectorAll(".reveal");
