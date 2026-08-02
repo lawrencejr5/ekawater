@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./page.css";
+import { CartProvider } from "./cart-context";
 
 export const metadata: Metadata = {
   title: "EKA Water Enhancer — One Squeeze. Endless Flavor.",
@@ -22,7 +23,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <CartProvider>
+          {children}
+        </CartProvider>
+      </body>
     </html>
   );
 }

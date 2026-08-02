@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { CartProvider, useCart } from "./cart-context";
+import { useCart } from "./cart-context";
 import { PRODUCTS, BUNDLES, formatPrice } from "./products";
 import type { Product } from "./products";
+import Link from "next/link";
 
 // ─── Navbar ──────────────────────────────────────────────────────────────────
 
-function Navbar({ onCartOpen }: { onCartOpen: () => void }) {
+export function Navbar({ onCartOpen }: { onCartOpen: () => void }) {
   const { totalItems } = useCart();
   const [scrolled, setScrolled] = useState(false);
 
@@ -139,18 +140,13 @@ function Hero({ onShopNow }: { onShopNow: () => void }) {
 
 // ─── Product Card ─────────────────────────────────────────────────────────────
 
-function ProductCard({
-  product,
-  onSelect,
-}: {
-  product: Product;
-  onSelect: (p: Product) => void;
-}) {
+function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useCart();
   const [added, setAdded] = useState(false);
 
   const handleAdd = (e: React.MouseEvent) => {
     e.stopPropagation();
+    e.preventDefault();
     addToCart({
       id: product.id,
       name: product.name,
@@ -163,18 +159,16 @@ function ProductCard({
   };
 
   return (
-    <article
+    <Link
+      href={`/products/${product.id}`}
       className="product-card"
       style={
         {
           "--card-color": product.color,
           "--card-light": product.colorLight,
+          display: "block",
         } as React.CSSProperties
       }
-      onClick={() => onSelect(product)}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => e.key === "Enter" && onSelect(product)}
       aria-label={`View ${product.flavor} flavor`}
     >
       {product.badge && (
@@ -247,7 +241,7 @@ function ProductCard({
           </button>
         </div>
       </div>
-    </article>
+    </Link>
   );
 }
 
@@ -408,8 +402,6 @@ function ProductModal({
 // ─── Products Section ─────────────────────────────────────────────────────────
 
 function ProductsSection() {
-  const [selected, setSelected] = useState<Product | null>(null);
-
   return (
     <section className="section reveal" id="products">
       <div className="container">
@@ -424,14 +416,10 @@ function ProductsSection() {
 
         <div className="products-grid">
           {PRODUCTS.map((p) => (
-            <ProductCard key={p.id} product={p} onSelect={setSelected} />
+            <ProductCard key={p.id} product={p} />
           ))}
         </div>
       </div>
-
-      {selected && (
-        <ProductModal product={selected} onClose={() => setSelected(null)} />
-      )}
     </section>
   );
 }
@@ -728,7 +716,7 @@ function FAQ() {
 
 // ─── Cart Drawer ──────────────────────────────────────────────────────────────
 
-function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function CartDrawer({ open, onClose }: { open: boolean; onClose: () => void }) {
   const { items, removeFromCart, updateQuantity, totalPrice, clearCart } =
     useCart();
   const [checkout, setCheckout] = useState(false);
@@ -1012,7 +1000,7 @@ function CheckoutForm({
 
 // ─── Footer ───────────────────────────────────────────────────────────────────
 
-function Footer() {
+export function Footer() {
   return (
     <footer className="footer">
       <div className="container">
@@ -1109,9 +1097,5 @@ function EkaApp() {
 }
 
 export default function HomePage() {
-  return (
-    <CartProvider>
-      <EkaApp />
-    </CartProvider>
-  );
+  return <EkaApp />;
 }
